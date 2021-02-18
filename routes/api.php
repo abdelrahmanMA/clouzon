@@ -3,7 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Models\Cart;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +32,6 @@ Route::group([
     Route::get('/user', [AuthController::class, 'getUser']);
 });
 
-Route::get('/products', [ProductController::class, 'index'])->name('product.index');
-Route::get('/products/{slug}', [ProductController::class, 'show'])->name('product.show');
+Route::apiResource('products', ProductController::class)->except(['update', 'store', 'destroy']);
+Route::apiResource('cart', CartController::class)->except(['update', 'index']);
+Route::post('/cart/{cart}', [CartController::class, 'addProducts']);

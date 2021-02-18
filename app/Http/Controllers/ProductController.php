@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
-     * List All Products
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $products = Product::paginate(15);
-        return $products;
+        return new ProductCollection(Product::paginate(30));
     }
+
     /**
-     * Get product by slug
+     * Display the specified resource.
      *
-     * @param string $slug
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show(Product $product)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
-        return response()->json($product);
+        return new ProductResource($product);
     }
 }

@@ -20,11 +20,12 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        $cart = null;
         if (auth()->check()) {
             $userID = auth()->user()->id;
+            $cart = Cart::where(['user_id' => $userID])->first();
+            $message = 'You already have a cart!';
         }
-        $cart = Cart::where(['user_id' => $userID])->first();
-        $message = 'You already have a cart!';
         if (!$cart) {
             $cart = Cart::create([
                 'id' => md5(uniqid(rand(), true)),
